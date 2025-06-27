@@ -1,0 +1,589 @@
+:root {
+    --primary-color: #1a754d;
+    --secondary-color: #16533a;
+    --text-color: #34495e;
+    --background-color: #1a231f;
+    --blue-color: #007bff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: clamp(1.4, 1.6vw, 1.8);
+    color: white;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background-color: var(--background-color);
+    font-size: clamp(14px, 2vw, 18px);
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--background-color);
+    padding: clamp(0.5rem, 1vw, 1rem) clamp(1rem, 2vw, 2rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.nav-links-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-links li a i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-links li a:hover i {
+    transform: scale(1.2);
+}
+
+.social-nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.social-nav span {
+    color: white;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.social-icon {
+    font-size: 1.2rem;
+    color: white;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.social-icon:hover {
+    transform: translateY(-3px) rotate(10deg);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: var(--primary-color);
+}
+
+.nav-links li a:hover::after {
+    width: 100%;
+}
+
+/* Hero Section */
+.hero {
+    min-height: clamp(60vh, 80vh, 90vh);
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://source.unsplash.com/1600x900/?taekwondo');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: clamp(1rem, 2vw, 2rem);
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2rem);
+    background: rgba(26, 35, 31, 0.8);
+    padding: clamp(1rem, 3vw, 2rem);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    max-width: clamp(400px, 80vw, 700px);
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: clamp(300px, 50vh, 400px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.main-content {
+    display: grid;
+    place-items: center;
+    padding: clamp(4rem, 10vh, 6rem) clamp(2rem, 5vw, 4rem);
+}
+
+.videos-section {
+    padding: clamp(2rem, 5vw, 4rem);
+    max-width: clamp(800px, 90vw, 1200px);
+    margin: 0 auto;
+    background: rgba(26, 35, 31, 0.8);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 0 1rem;
+}
+
+.hero-content h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 0.5rem;
+}
+
+.hero-content p {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #0056b3 !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 5px !important;
+    transition: transform 0.3s ease !important;
+    margin-bottom: 0.5rem !important;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px) !important;
+    background: #2ecc71 !important;
+}
+
+/* Videos Section */
+.videos-section {
+    padding: 4rem 2rem;
+}
+
+.videos-section h2 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    margin-bottom: 2rem;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+/* Footer */
+.footer {
+    background: var(--background-color);
+    padding: clamp(1rem, 2vw, 2rem);
+    text-align: center;
+    color: white;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.footer-content p {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+}
+
+.entrenamientos-section {
+    padding: 4rem 2rem;
+    background: var(--background-color);
+    color: white;
+}
+
+.entrenamientos-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+    font-size: 2rem;
+}
+
+.entrenamientos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Haciendo los contenedores más estrechos */
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+.entrenamiento-card {
+    background: rgba(26, 35, 31, 0.8);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+    border: 2px solid var(--primary-color);
+    backdrop-filter: blur(5px);
+}
+
+.entrenamiento-card:hover {
+    transform: translateY(-5px);
+    border-color: #2ecc71;
+}
+
+.entrenamiento-card img {
+    width: 100%;
+    height: 300px; /* Haciendo el GIF más alto para que se vea más grande */
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustando el tamaño del container para que acomode el GIF más grande */
+.entrenamiento-card {
+    background: rgba(26, 35, 31, 0.8);
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+    border: 2px solid var(--primary-color);
+    backdrop-filter: blur(5px);
+    min-height: 400px; /* Aumentando la altura mínima del container */
+}
+
+.entrenamiento-info {
+    color: white;
+}
+
+.entrenamiento-info h3 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.entrenamiento-info p {
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.see-more-button {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.see-more-button:hover {
+    background: #2ecc71;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+footer {
+    background: var(--background-color);
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+/* Botones de Desafío Landa */
+.days-buttons .day-button {
+    display: inline-block !important;
+    padding: 0.5rem 1rem !important;
+    background: #0056b3 !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 5px !important;
+    transition: all 0.3s ease !important;
+    margin-right: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.days-buttons .day-button:hover {
+    transform: translateY(-3px) rotate(10deg) !important;
+    background: #2ecc71 !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Botón de Ejercicios */
+.days-buttons .exercise-button {
+    display: inline-block !important;
+    padding: 0.5rem 1rem !important;
+    background: #0056b3 !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 5px !important;
+    transition: all 0.3s ease !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.days-buttons .exercise-button:hover {
+    transform: translateY(-3px) rotate(10deg) !important;
+    background: #2ecc71 !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Botón de Ver Videos */
+.days-buttons .watch-button {
+    display: inline-block !important;
+    padding: 0.5rem 1rem !important;
+    background: #0056b3 !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 5px !important;
+    transition: all 0.3s ease !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.days-buttons .watch-button:hover {
+    transform: translateY(-3px) rotate(10deg) !important;
+    background: #2ecc71 !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+}
+
+/* Videos Section */
+.videos-section {
+    padding: 5rem 5%;
+    background: white;
+}
+
+.videos-section h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--secondary-color);
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.video-card {
+    background: rgba(26, 35, 31, 0.8);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: transform 0.3s ease;
+    border: 2px solid var(--primary-color);
+    backdrop-filter: blur(5px);
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    border-color: #2ecc71;
+}
+
+.video-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.video-info {
+    color: white;
+}
+
+.video-info h3 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.video-info p {
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.watch-button {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.watch-button:hover {
+    background: #2ecc71;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* About Section */
+.about-section {
+    padding: 5rem 5%;
+    background: var(--background-color);
+}
+
+.about-section h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--secondary-color);
+}
+
+.about-text {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 5rem 5%;
+    background: var(--background-color);
+}
+
+.contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.contact-section h2 {
+    color: var(--secondary-color);
+    margin-bottom: 2rem;
+}
+
+.ebook-info {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.ebook-info h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.ebook-info p {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+
+
+/* Footer */
+footer {
+    background: var(--secondary-color);
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .hamburger {
+        display: block;
+        cursor: pointer;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.2rem;
+    }
+}

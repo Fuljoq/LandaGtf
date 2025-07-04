@@ -1,7 +1,10 @@
 // Variables
 const videoGrid = document.querySelector('.video-grid');
 const hamburger = document.querySelector('.hamburger');
-const navLinks = document.querySelector('.nav-links');
+const navLinksContainer = document.querySelector('.nav-links-container');
+const navLinks = document.querySelectorAll('.nav-links a');
+const navbar = document.querySelector('.navbar');
+let lastScroll = 0;
 
 // Videos
 const videos = [
@@ -27,10 +30,22 @@ function createVideoCard(video) {
     if (video.title === "Desafío Landa") {
         daysButtons = `
             <div class="days-buttons">
-                <a href="https://www.tiktok.com/@landa_gtf/video/7310754461704523013" target="_blank" class="day-button">Día 100</a>
-                <a href="https://www.tiktok.com/@landa_gtf/video/7347895368157269254" target="_blank" class="day-button">Día 200</a>
-                <a href="https://www.tiktok.com/@landa_gtf/video/7385012012977310982" target="_blank" class="day-button">Día 300</a>
-                <a href="https://www.tiktok.com/@landa_gtf/video/7409509296116878598" target="_blank" class="day-button">Día 365</a>
+                <a href="https://www.tiktok.com/@landa_gtf/video/7310754461704523013" target="_blank" class="day-button">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>Día 100</span>
+                </a>
+                <a href="https://www.tiktok.com/@landa_gtf/video/7347895368157269254" target="_blank" class="day-button">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>Día 200</span>
+                </a>
+                <a href="https://www.tiktok.com/@landa_gtf/video/7385012012977310982" target="_blank" class="day-button">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>Día 300</span>
+                </a>
+                <a href="https://www.tiktok.com/@landa_gtf/video/7409509296116878598" target="_blank" class="day-button special-day">
+                    <i class="fas fa-trophy"></i>
+                    <span>Día 365</span>
+                </a>
             </div>
         `;
     }
@@ -42,7 +57,10 @@ function createVideoCard(video) {
             ${daysButtons}
             ${video.title === "Ejercicios" ? `
                 <div class="days-buttons">
-                    <a href="https://www.tiktok.com/@landa_gtf/video/7504422996199623991" target="_blank" class="day-button">Ver Video</a>
+                    <a href="https://www.tiktok.com/@landa_gtf/video/7504422996199623991" target="_blank" class="watch-button">
+                        <i class="fas fa-play"></i>
+                        <span>Ver Video</span>
+                    </a>
                 </div>
             ` : ''}
         </div>
@@ -73,7 +91,107 @@ videos.forEach(video => {
 
 // Menú móvil
 hamburger.addEventListener('click', () => {
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    hamburger.classList.toggle('active');
+    navLinksContainer.classList.toggle('active');
+    document.body.style.overflow = navLinksContainer.classList.contains('active') ? 'hidden' : '';
+});
+
+// Función para actualizar el enlace activo basado en la URL actual
+function updateActiveLink() {
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const currentHash = window.location.hash || '#home';
+    
+    navLinks.forEach(link => {
+        const linkPath = link.getAttribute('href');
+        // Verificar si el enlace coincide con la ruta actual o el hash
+        if ((linkPath === currentPath) || 
+            (linkPath === currentHash) || 
+            (currentPath === 'index.html' && linkPath === '#home' && currentHash === '')) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+// Cerrar menú al hacer clic en un enlace
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) {
+            hamburger.classList.remove('active');
+            navLinksContainer.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Actualizar el enlace activo después de un pequeño retraso para permitir la navegación
+        setTimeout(updateActiveLink, 100);
+    });
+});
+
+// Actualizar el enlace activo al cargar la página
+document.addEventListener('DOMContentLoaded', updateActiveLink);
+window.addEventListener('load', updateActiveLink);
+window.addEventListener('hashchange', updateActiveLink);
+
+// Efecto de scroll en la barra de navegación
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    // Efecto de mostrar/ocultar navbar al hacer scroll
+    if (currentScroll <= 0) {
+        navbar.classList.remove('scrolled');
+        return;
+    }
+    
+    if (currentScroll > lastScroll && !navbar.classList.contains('scrolled-down')) {
+        // Scroll hacia abajo
+        navbar.classList.add('scrolled-down');
+        navbar.classList.add('scrolled');
+    } else if (currentScroll < lastScroll && navbar.classList.contains('scrolled-down')) {
+        // Scroll hacia arriba
+        navbar.classList.remove('scrolled-down');
+        navbar.classList.add('scrolled');
+    }
+    
+    lastScroll = currentScroll;
+});
+
+// Cerrar menú al hacer clic fuera de él
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-links-container') && !e.target.closest('.hamburger')) {
+        hamburger.classList.remove('active');
+        navLinksContainer.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// Asegurar que el menú se cierre al cambiar el tamaño de la ventana
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 1024) {
+        hamburger.classList.remove('active');
+        navLinksContainer.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// Efecto de carga suave para la página
+document.addEventListener('DOMContentLoaded', () => {
+    // Añadir clase de carga inicial
+    document.body.classList.add('page-loaded');
+    
+    // Desplazamiento suave para los enlaces internos
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 80, // Ajustar para la barra de navegación fija
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
 });
 
 // Scroll suave para los enlaces de navegación

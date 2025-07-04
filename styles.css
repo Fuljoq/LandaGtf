@@ -25,25 +25,57 @@ body {
     font-size: clamp(14px, 2vw, 18px);
 }
 
-/* Navbar */
+/* Navbar Moderna */
+:root {
+    --nav-bg: rgba(22, 28, 36, 0.98);
+    --nav-text: #ffffff;
+    --nav-hover: #2ecc71;
+    --nav-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --nav-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --nav-glass: rgba(22, 28, 36, 0.8);
+    --nav-border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: var(--background-color);
-    padding: clamp(0.5rem, 1vw, 1rem) clamp(1rem, 2vw, 2rem);
+    background: var(--nav-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0.8rem clamp(1rem, 3vw, 3rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: var(--nav-shadow);
+    border-bottom: var(--nav-border);
+    transition: var(--nav-transition);
+}
+
+.navbar.scrolled {
+    padding: 0.5rem clamp(1rem, 3vw, 3rem);
+    background: rgba(22, 28, 36, 0.95);
 }
 
 .logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #2ecc71, #3498db);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: var(--nav-transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo i {
     font-size: 1.5rem;
-    font-weight: 700;
-    color: white;
 }
 
 .nav-links-container {
@@ -51,6 +83,7 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-left: 3rem;
 }
 
 .nav-links {
@@ -58,7 +91,7 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .nav-links li {
@@ -67,69 +100,285 @@ body {
 
 .nav-links li a {
     text-decoration: none;
-    color: white;
-    padding: 0.5rem 1rem;
-    position: relative;
-    transition: all 0.3s ease;
+    color: var(--nav-text);
+    padding: 0.8rem 1.2rem;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    transition: var(--nav-transition);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.nav-links li a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
+    opacity: 0;
+    transition: var(--nav-transition);
+    z-index: -1;
+    border-radius: 6px;
+}
+
+.nav-links li a:hover::before {
+    opacity: 1;
 }
 
 .nav-links li a i {
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
+    font-size: 1.1rem;
+    transition: var(--nav-transition);
+    color: var(--nav-hover);
+}
+
+.nav-links li a:hover {
+    color: var(--nav-hover);
+    transform: translateY(-2px);
 }
 
 .nav-links li a:hover i {
     transform: scale(1.2);
 }
 
+/* Indicador activo */
+.nav-links li a {
+    position: relative;
+    padding-bottom: 8px; /* Espacio para el indicador */
+    transition: color 0.3s ease;
+}
+
+/* Solo mostrar el indicador en el enlace activo, excepto en Videos */
+.nav-links li a.active {
+    color: var(--nav-hover);
+    font-weight: 500;
+}
+
+/* Mostrar punto solo en Inicio */
+.nav-links li:first-child a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--nav-hover);
+    border-radius: 50%;
+}
+
+/* Efecto hover solo en el texto */
+.nav-links li a:hover {
+    color: var(--nav-hover);
+}
+
+/* Sección de redes sociales */
 .social-nav {
     display: flex;
     gap: 1rem;
     align-items: center;
-}
-
-.social-nav span {
-    color: white;
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-.social-icon {
-    font-size: 1.2rem;
-    color: white;
-    transition: all 0.3s ease;
+    margin-left: auto;
     position: relative;
-    padding: 0.5rem;
-    border-radius: 50%;
+    padding-left: 1.5rem;
+}
+
+.social-nav::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60%;
+    width: 1px;
     background: rgba(255, 255, 255, 0.1);
 }
 
-.social-icon:hover {
-    transform: translateY(-3px) rotate(10deg);
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.social-nav span {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
-.nav-links li a::after {
+.social-icon {
+    font-size: 1.1rem;
+    color: white;
+    transition: var(--nav-transition);
+    position: relative;
+    padding: 0.6rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+}
+
+.social-icon::before {
     content: '';
     position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
+    top: 0;
     left: 0;
-    background-color: var(--primary-color);
-    transition: width 0.3s ease;
-}
-
-.nav-links li a:hover {
-    color: var(--primary-color);
-}
-
-.nav-links li a:hover::after {
     width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.2), rgba(52, 152, 219, 0.2));
+    opacity: 0;
+    transition: var(--nav-transition);
+}
+
+.social-icon i {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Asegurarse de que no haya bordes ni líneas debajo de los íconos */
+.social-icon {
+    text-decoration: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.social-icon::after {
+    display: none !important;
+}
+
+.social-icon:hover {
+    transform: translateY(-3px);
+    color: var(--nav-hover);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.social-icon:hover::before {
+    opacity: 1;
+}
+
+/* Menú hamburguesa para móviles */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: white;
+    border-radius: 3px;
+    transition: var(--nav-transition);
+}
+
+/* Efecto de scroll */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .nav-links-container {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: var(--nav-bg);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 6rem 2rem 2rem;
+        transition: var(--nav-transition);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+    }
+
+    .nav-links-container.active {
+        right: 0;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links li a {
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+    }
+
+    .social-nav {
+        margin: 2rem 0 1rem;
+        padding: 1.5rem 0 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .social-nav::before {
+        display: none;
+    }
+
+    .social-nav span {
+        margin-bottom: 1rem;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+}
+
+/* Animación de entrada para los enlaces */
+@keyframes navLinkFade {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 /* Hero Section */
@@ -361,40 +610,129 @@ footer {
 }
 
 /* Botones de Desafío Landa */
+.days-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin: 1rem 0;
+    justify-content: center;
+}
+
 .days-buttons .day-button {
-    display: inline-block !important;
-    padding: 0.5rem 1rem !important;
-    background: #0056b3 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.5rem !important;
+    background: linear-gradient(135deg, #3498db, #2ecc71) !important;
     color: white !important;
     text-decoration: none !important;
-    border-radius: 5px !important;
+    border-radius: 50px !important;
     transition: all 0.3s ease !important;
-    margin-right: 0.5rem !important;
-    margin-bottom: 0.5rem !important;
+    margin: 0 !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: none !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.days-buttons .day-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2ecc71, #3498db);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
 }
 
 .days-buttons .day-button:hover {
-    transform: translateY(-3px) rotate(10deg) !important;
-    background: #2ecc71 !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
 }
 
-/* Botón de Ejercicios */
-.days-buttons .exercise-button {
-    display: inline-block !important;
-    padding: 0.5rem 1rem !important;
-    background: #0056b3 !important;
+.days-buttons .day-button:hover::before {
+    opacity: 1;
+}
+
+.days-buttons .day-button i {
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.days-buttons .day-button:hover i {
+    transform: scale(1.2);
+}
+
+/* Estilo especial para el botón del día 365 */
+.days-buttons .day-button.special-day {
+    background: linear-gradient(135deg, #f39c12, #e74c3c) !important;
+    padding: 0.8rem 2rem !important;
+}
+
+.days-buttons .day-button.special-day::before {
+    background: linear-gradient(135deg, #e74c3c, #f39c12);
+}
+
+.days-buttons .day-button.special-day i {
+    color: #ffd700;
+}
+
+/* Botón de Ver Video */
+.days-buttons .watch-button {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 2rem !important;
+    background: linear-gradient(135deg, #9b59b6, #8e44ad) !important;
     color: white !important;
     text-decoration: none !important;
-    border-radius: 5px !important;
+    border-radius: 50px !important;
     transition: all 0.3s ease !important;
-    margin-bottom: 0.5rem !important;
+    margin: 0 !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: none !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
-.days-buttons .exercise-button:hover {
-    transform: translateY(-3px) rotate(10deg) !important;
-    background: #2ecc71 !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+.days-buttons .watch-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.days-buttons .watch-button:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2) !important;
+}
+
+.days-buttons .watch-button:hover::before {
+    opacity: 1;
+}
+
+.days-buttons .watch-button i {
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.days-buttons .watch-button:hover i {
+    transform: scale(1.2);
 }
 
 /* Botón de Ver Videos */

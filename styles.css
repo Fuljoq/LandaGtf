@@ -1,9 +1,13 @@
 :root {
-    --primary-color: #1a754d;
-    --secondary-color: #16533a;
+    --primary-color: #2ecc71;  /* Verde brillante para elementos principales */
+    --secondary-color: #27ae60;  /* Verde más oscuro para hover/efectos */
+    --accent-color: #1abc9c;  /* Verde azulado para acentos */
     --text-color: #34495e;
     --background-color: #1a231f;
-    --blue-color: #007bff;
+    --nav-bg: rgba(22, 28, 36, 0.98);
+    --nav-text: #ffffff;
+    --nav-hover: #2ecc71;
+    --nav-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -119,66 +123,7 @@ body {
     color: #2ecc71;
 }
 
-/* Media Queries para móviles */
-@media (max-width: 1024px) {
-    .hamburger {
-        display: flex;
-    }
 
-    .nav-links-container {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80%;
-        max-width: 400px;
-        height: 100vh;
-        background: rgba(22, 28, 36, 0.98);
-        backdrop-filter: blur(12px);
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        transition: right 0.5s ease;
-        z-index: 999;
-        padding: 2rem;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-links-container.active {
-        right: 0;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        width: 100%;
-        margin-bottom: 2rem;
-    }
-
-    .nav-links li {
-        width: 100%;
-        text-align: center;
-        margin: 0.5rem 0;
-    }
-
-    .nav-links li a {
-        padding: 1rem;
-        justify-content: center;
-        font-size: 1.2rem;
-    }
-
-    .social-nav {
-        flex-direction: column;
-        margin-left: 0;
-        text-align: center;
-    }
-
-    .social-nav span {
-        margin-bottom: 1rem;
-    }
-
-    .social-icons {
-        justify-content: center;
-    }
-}
 
 /* Navbar Moderna */
 :root {
@@ -260,14 +205,16 @@ body {
     font-weight: 500;
     font-size: 1rem;
     letter-spacing: 0.5px;
-    border-radius: 8px;
+    position: relative;
     transition: var(--nav-transition);
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
+    gap: 0.5rem;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+    color: var(--primary-color);
 }
 
 .nav-links li a::before {
@@ -332,6 +279,89 @@ body {
 /* Efecto hover solo en el texto */
 .nav-links li a:hover {
     color: var(--nav-hover);
+}
+
+/* Estilos para la página de contacto */
+.contact-page {
+    min-height: calc(100vh - 200px);
+    padding-top: 80px; /* Espacio para el navbar fijo */
+}
+
+.contact-section {
+    padding: 2rem 0;
+}
+
+.contact-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: white;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.ebook-info {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.ebook-title {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.ebook-description {
+    color: #ddd;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+/* Estilos para los botones */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.cta-button.instagram-button {
+    background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+    color: white;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+.cta-button.instagram-button:hover {
+    box-shadow: 0 4px 12px rgba(193, 53, 132, 0.3);
+}
+
+.cta-button i {
+    font-size: 1.2rem;
 }
 
 /* Sección de redes sociales */
@@ -456,19 +486,27 @@ body {
 
 /* Responsive */
 @media (max-width: 1024px) {
+    .hamburger {
+        display: flex;
+    }
+
     .nav-links-container {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 280px;
+        width: 80%;
+        max-width: 400px;
         height: 100vh;
-        background: var(--nav-bg);
+        background: rgba(22, 28, 36, 0.98);
+        backdrop-filter: blur(12px);
         flex-direction: column;
-        justify-content: flex-start;
-        padding: 6rem 2rem 2rem;
-        transition: var(--nav-transition);
-        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
-        overflow-y: auto;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.5s ease;
+        z-index: 999;
+        padding: 2rem;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        display: flex !important;
     }
 
     .nav-links-container.active {
@@ -478,16 +516,45 @@ body {
     .nav-links {
         flex-direction: column;
         width: 100%;
-        gap: 0.5rem;
+        margin-bottom: 2rem;
+        padding: 0;
+        display: flex !important;
     }
 
     .nav-links li {
         width: 100%;
+        text-align: center;
+        margin: 0.5rem 0;
+        list-style: none;
     }
 
     .nav-links li a {
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
+        padding: 1rem;
+        justify-content: center;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        text-decoration: none;
+    }
+
+    .social-nav {
+        flex-direction: column;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .social-nav span {
+        margin-bottom: 1rem;
+        display: block;
+        color: white;
+    }
+
+    .social-icons {
+        justify-content: center;
+        display: flex;
+        gap: 1rem;
     }
 
     .social-nav {

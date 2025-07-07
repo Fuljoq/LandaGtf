@@ -47,6 +47,7 @@ body {
     height: 21px;
     cursor: pointer;
     z-index: 1000;
+    padding: 5px;
 }
 
 .hamburger span {
@@ -72,6 +73,7 @@ body {
 .nav-links-container {
     display: flex;
     align-items: center;
+    transition: all 0.3s ease;
 }
 
 .nav-links {
@@ -488,6 +490,114 @@ body {
 @media (max-width: 1024px) {
     .hamburger {
         display: flex;
+        z-index: 1000;
+    }
+    
+    .nav-links-container {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 85%;
+        max-width: 320px;
+        height: 100vh;
+        background: rgba(22, 28, 36, 0.98);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 80px 20px 40px;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+    }
+    
+    .nav-links-container.active {
+        right: 0;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        align-items: stretch;
+        padding: 0 10px;
+    }
+    
+    .nav-links li {
+        width: 100%;
+        text-align: left;
+        margin: 0.25rem 0;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: all 0.3s ease;
+    }
+    
+    .nav-links-container.active .nav-links li {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    /* Animación escalonada para los elementos del menú */
+    .nav-links li:nth-child(1) { transition-delay: 0.1s; }
+    .nav-links li:nth-child(2) { transition-delay: 0.15s; }
+    .nav-links li:nth-child(3) { transition-delay: 0.2s; }
+    .nav-links li:nth-child(4) { transition-delay: 0.25s; }
+    
+    .nav-links li a {
+        justify-content: flex-start;
+        padding: 1rem 1.25rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .nav-links li a:hover,
+    .nav-links li a.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--primary-color);
+        transform: translateX(5px);
+    }
+    
+    .social-nav {
+        margin-top: 2.5rem;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 10px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease 0.3s;
+    }
+    
+    .nav-links-container.active .social-nav {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .social-nav span {
+        margin-bottom: 1.25rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.95rem;
+        text-align: center;
+        padding: 0 1rem;
+    }
+    
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1.25rem;
+        margin-top: 0.5rem;
+    }
+    
+    .social-icons a {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.4rem;
+        transition: all 0.2s ease;
+    }
+    
+    .social-icons a:hover {
+        color: var(--primary-color);
+        transform: translateY(-2px);
     }
     
     .video-grid {
@@ -968,6 +1078,115 @@ footer {
     transform: scale(1.2);
 }
 
+/* Estilos para los botones de ejercicios */
+.exercise-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    margin: 1.5rem 0;
+}
+
+.exercise-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.exercise-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.exercise-button i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    min-width: 20px;
+    text-align: center;
+}
+
+.exercise-button span {
+    flex: 1;
+    text-align: center;
+}
+
+.exercise-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.exercise-button:hover::before {
+    opacity: 1;
+}
+
+.exercise-button:hover i {
+    transform: scale(1.15);
+}
+
+.exercise-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo para el botón de técnica */
+.exercise-button:first-child {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.exercise-button:first-child::before {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+}
+
+/* Estilo para el botón de entrenamiento completo */
+.exercise-button:last-child {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.exercise-button:last-child::before {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+    .exercise-buttons {
+        margin: 1.25rem 0;
+    }
+    
+    .exercise-button {
+        padding: 0.9rem 1.25rem;
+        font-size: 0.95rem;
+        border-radius: 10px;
+    }
+    
+    .exercise-button i {
+        font-size: 1.1rem;
+    }
+}
+
 /* Botón de Ver Videos */
 .days-buttons .watch-button {
     display: inline-block !important;
@@ -1140,6 +1359,39 @@ footer {
 }
 
 /* Responsive Design */
+/* Estilos para cuando el menú está abierto */
+html.menu-open {
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Overlay para el menú móvil */
+.nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 990;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+@media (max-width: 1024px) {
+    .nav-overlay {
+        display: block;
+    }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;

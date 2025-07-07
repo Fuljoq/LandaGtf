@@ -16,7 +16,18 @@ const videos = [
     {
         title: "Ejercicios",
         thumbnail: "cara.jpg",
-        url: "https://www.youtube.com/embed/VIDEO_ID_2"
+        buttons: [
+            {
+                url: "https://www.tiktok.com/@landa_gtf/video/7504786976101436727",
+                title: "Ejercicio de Técnica",
+                icon: "fist-raised"
+            },
+            {
+                url: "https://www.tiktok.com/@landa_gtf/video/7520033056682462520",
+                title: "Entrenamiento Completo",
+                icon: "dumbbell"
+            }
+        ]
     }
 ];
 
@@ -25,10 +36,11 @@ function createVideoCard(video) {
     const videoCard = document.createElement('div');
     videoCard.className = 'video-card';
     
-    // Si es el video de Landa Challenge, agregar botones de días
-    let daysButtons = '';
+    // Botones especiales según el tipo de video
+    let specialButtons = '';
+    
     if (video.title === "Landa Challenge") {
-        daysButtons = `
+        specialButtons = `
             <div class="days-buttons">
                 <a href="https://www.tiktok.com/@landa_gtf/video/7310754461704523013" target="_blank" class="day-button">
                     <i class="fas fa-calendar-day"></i>
@@ -44,25 +56,31 @@ function createVideoCard(video) {
                 </a>
                 <a href="https://www.tiktok.com/@landa_gtf/video/7409509296116878598" target="_blank" class="day-button special-day">
                     <i class="fas fa-trophy"></i>
-                    <span>Día 365</span>
+                    <span>Día 366</span>
                 </a>
+            </div>
+        `;
+    } else if (video.buttons) {
+        // Botones para la sección de ejercicios
+        specialButtons = `
+            <div class="exercise-buttons">
+                ${video.buttons.map(btn => `
+                    <a href="${btn.url}" target="_blank" class="exercise-button">
+                        <i class="fas fa-${btn.icon}"></i>
+                        <span>${btn.title}</span>
+                    </a>
+                `).join('')}
             </div>
         `;
     }
     
     videoCard.innerHTML = `
-        <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail">
+        <div class="video-thumbnail">
+            <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail-img">
+        </div>
         <div class="video-info">
-            <h3>${video.title}</h3>
-            ${daysButtons}
-            ${video.title === "Ejercicios" ? `
-                <div class="days-buttons">
-                    <a href="https://www.tiktok.com/@landa_gtf/video/7504422996199623991" target="_blank" class="watch-button">
-                        <i class="fas fa-play"></i>
-                        <span>Ver Video</span>
-                    </a>
-                </div>
-            ` : ''}
+            <h3 class="video-title">${video.title}</h3>
+            ${specialButtons}
         </div>
     `;
     return videoCard;
@@ -90,10 +108,31 @@ videos.forEach(video => {
 });
 
 // Menú móvil
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navLinksContainer.classList.toggle('active');
-    document.body.style.overflow = navLinksContainer.classList.contains('active') ? 'hidden' : '';
+hamburger.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevenir que el evento se propague
+    const isActive = !hamburger.classList.contains('active');
+    
+    // Alternar clases
+    hamburger.classList.toggle('active', isActive);
+    navLinksContainer.classList.toggle('active', isActive);
+    
+    // Bloquear/desbloquear scroll del body
+    document.body.style.overflow = isActive ? 'hidden' : '';
+    
+    // Agregar/remover clase al html para estilos específicos
+    document.documentElement.classList.toggle('menu-open', isActive);
+});
+
+// Cerrar menú al hacer clic fuera de él
+document.addEventListener('click', (e) => {
+    const isClickInside = navLinksContainer.contains(e.target) || hamburger.contains(e.target);
+    
+    if (!isClickInside && navLinksContainer.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        navLinksContainer.classList.remove('active');
+        document.body.style.overflow = '';
+        document.documentElement.classList.remove('menu-open');
+    }
 });
 
 // Función para actualizar el enlace activo basado en la URL actual
@@ -116,11 +155,12 @@ function updateActiveLink() {
 
 // Cerrar menú al hacer clic en un enlace
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
         if (window.innerWidth <= 1024) {
             hamburger.classList.remove('active');
             navLinksContainer.classList.remove('active');
             document.body.style.overflow = '';
+            document.documentElement.classList.remove('menu-open');
         }
         
         // Actualizar el enlace activo después de un pequeño retraso para permitir la navegación

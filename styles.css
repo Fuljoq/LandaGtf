@@ -489,6 +489,17 @@ body {
     .hamburger {
         display: flex;
     }
+    
+    .video-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        width: 100%;
+        padding: 0;
+    }
+    
+    .videos-section {
+        padding: 2rem 1rem;
+    }
 
     .nav-links-container {
         position: fixed;
@@ -831,7 +842,7 @@ footer {
     margin-top: 3rem;
 }
 
-/* Botones de Desafío Landa */
+/* Botones de Landa Challenge */
 .days-buttons {
     display: flex;
     flex-wrap: wrap;

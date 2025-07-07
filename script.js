@@ -9,7 +9,7 @@ let lastScroll = 0;
 // Videos
 const videos = [
     {
-        title: "Desafío Landa",
+        title: "Landa Challenge",
         thumbnail: "cara.jpg",
         url: "https://www.youtube.com/embed/VIDEO_ID_1"
     },
@@ -25,9 +25,9 @@ function createVideoCard(video) {
     const videoCard = document.createElement('div');
     videoCard.className = 'video-card';
     
-    // Si es el video de Desafío Landa, agregar botones de días
+    // Si es el video de Landa Challenge, agregar botones de días
     let daysButtons = '';
-    if (video.title === "Desafío Landa") {
+    if (video.title === "Landa Challenge") {
         daysButtons = `
             <div class="days-buttons">
                 <a href="https://www.tiktok.com/@landa_gtf/video/7310754461704523013" target="_blank" class="day-button">
@@ -73,8 +73,8 @@ videos.forEach(video => {
     const card = createVideoCard(video);
     videoGrid.appendChild(card);
     
-    // Agregar eventos hover a los botones de días si es Desafío Landa
-    if (video.title === "Desafío Landa") {
+    // Agregar eventos hover a los botones de días si es Landa Challenge
+    if (video.title === "Landa Challenge") {
         const dayButtons = card.querySelectorAll('.day-button');
         dayButtons.forEach(button => {
             button.addEventListener('mouseenter', () => {

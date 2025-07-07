@@ -1,9 +1,10 @@
-// Variables
+// Variables globales
 const videoGrid = document.querySelector('.video-grid');
 const hamburger = document.querySelector('.hamburger');
 const navLinksContainer = document.querySelector('.nav-links-container');
 const navLinks = document.querySelectorAll('.nav-links a');
 const navbar = document.querySelector('.navbar');
+const socialLinks = document.querySelectorAll('.social-icons a');
 let lastScroll = 0;
 
 // Videos
@@ -88,36 +89,64 @@ function createVideoCard(video) {
 
 // Función para manejar la interacción con los botones de video
 const setupVideoButtons = (card) => {
-    // Manejar botones de días (Landa Challenge)
+    // Función para el efecto hover en desktop
+    const setupHoverEffect = (button) => {
+        if (window.innerWidth > 768) { // Solo para escritorio
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-2px)';
+                button.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0)';
+                button.style.boxShadow = 'none';
+            });
+        }
+    };
+
+    // Función para manejar el toque en móviles
+    const handleButtonTap = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const button = e.currentTarget;
+        const href = button.getAttribute('href');
+        
+        if (href) {
+            // Pequeño retraso para mejorar la retroalimentación táctil
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+                window.open(href, '_blank');
+            }, 100);
+        }
+    };
+
+    // Configurar botones de días (Landa Challenge)
     const dayButtons = card.querySelectorAll('.day-button');
     dayButtons.forEach(button => {
-        // Efecto hover para desktop
-        button.addEventListener('mouseenter', () => {
-            button.style.transform = 'translateY(-2px)';
-            button.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-        });
+        setupHoverEffect(button);
         
-        button.addEventListener('mouseleave', () => {
-            button.style.transform = 'translateY(0)';
-            button.style.boxShadow = 'none';
-        });
-        
-        // Asegurar que los clics funcionen en móviles
-        button.addEventListener('touchend', (e) => {
-            e.stopPropagation();
-            // Forzar la apertura del enlace en una nueva pestaña
-            window.open(button.href, '_blank');
+        // Para móviles
+        button.addEventListener('touchstart', () => {
+            button.style.opacity = '0.8';
         }, { passive: true });
+        
+        button.addEventListener('touchend', handleButtonTap, { passive: false });
+        button.addEventListener('click', handleButtonTap);
     });
     
-    // Manejar botones de ejercicios
+    // Configurar botones de ejercicios
     const exerciseButtons = card.querySelectorAll('.exercise-button');
     exerciseButtons.forEach(button => {
-        button.addEventListener('touchend', (e) => {
-            e.stopPropagation();
-            // Forzar la apertura del enlace en una nueva pestaña
-            window.open(button.href, '_blank');
+        setupHoverEffect(button);
+        
+        // Para móviles
+        button.addEventListener('touchstart', () => {
+            button.style.opacity = '0.8';
         }, { passive: true });
+        
+        button.addEventListener('touchend', handleButtonTap, { passive: false });
+        button.addEventListener('click', handleButtonTap);
     });
 };
 
@@ -180,42 +209,89 @@ function updateActiveLink() {
 const handleNavLinkClick = (e) => {
     // Prevenir el comportamiento por defecto para manejar manualmente la navegación
     e.preventDefault();
+    e.stopPropagation();
     
-    // Cerrar el menú móvil si está abierto
+    // Obtener el enlace
+    const link = e.currentTarget;
+    const href = link.getAttribute('href');
+    
+    // Navegar al destino del enlace
+    if (href.startsWith('#')) {
+        // Para enlaces de anclaje
+        const targetElement = document.querySelector(href);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    } else {
+        // Para enlaces a otras páginas
+        window.location.href = href;
+    }
+};
+
+// Función para cerrar el menú móvil
+function closeMobileMenu() {
     if (window.innerWidth <= 1024) {
         hamburger.classList.remove('active');
         navLinksContainer.classList.remove('active');
         document.body.style.overflow = '';
         document.documentElement.classList.remove('menu-open');
     }
+}
+
+// Función para manejar la navegación
+function handleNavigation(e) {
+    // Prevenir el comportamiento por defecto
+    e.preventDefault();
+    e.stopPropagation();
     
-    // Navegar al destino del enlace
-    const target = e.currentTarget.getAttribute('href');
-    if (target.startsWith('#')) {
-        // Para enlaces de anclaje
-        const targetElement = document.querySelector(target);
+    const link = e.currentTarget;
+    const href = link.getAttribute('href');
+    const target = link.getAttribute('target');
+    
+    // Navegación interna (anclas)
+    if (href.startsWith('#')) {
+        const targetElement = document.querySelector(href);
         if (targetElement) {
             targetElement.scrollIntoView({ behavior: 'smooth' });
         }
-    } else {
-        // Para enlaces a otras páginas
-        window.location.href = target;
+    } 
+    // Navegación externa
+    else if (href) {
+        target === '_blank' ? window.open(href, '_blank') : window.location.href = href;
     }
     
-    // Actualizar el enlace activo
-    updateActiveLink();
-};
+    closeMobileMenu();
+}
 
-// Agregar manejador de eventos a los enlaces de navegación
-navLinks.forEach(link => {
-    link.addEventListener('click', handleNavLinkClick);
-    // Agregar también para eventos táctiles
-    link.addEventListener('touchend', handleNavLinkClick, { passive: true });
+// Inicialización de eventos
+document.addEventListener('DOMContentLoaded', function() {
+    // Configuración de enlaces de navegación
+    navLinks.forEach(link => {
+        link.addEventListener('click', handleNavigation);
+        link.addEventListener('touchend', handleNavigation, { passive: true });
+    });
+
+    // Configuración de enlaces de redes sociales
+    socialLinks.forEach(link => {
+        link.addEventListener('click', e => e.stopPropagation());
+        link.addEventListener('touchend', e => e.stopPropagation(), { passive: true });
+    });
+
+    // Configuración de botones de video
+    const handleVideoButton = (e) => {
+        e.stopPropagation();
+        const href = e.currentTarget.getAttribute('href');
+        if (href) window.open(href, '_blank');
+    };
+
+    document.querySelectorAll('.day-button, .exercise-button').forEach(button => {
+        button.addEventListener('click', handleVideoButton);
+        button.addEventListener('touchend', handleVideoButton, { passive: true });
+    });
 });
 
 // Actualizar el enlace activo al cargar la página
 document.addEventListener('DOMContentLoaded', updateActiveLink);
-window.addEventListener('load', updateActiveLink);
 window.addEventListener('hashchange', updateActiveLink);
 
 // Efecto de scroll en la barra de navegación
@@ -264,32 +340,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // Añadir clase de carga inicial
     document.body.classList.add('page-loaded');
     
-    // Desplazamiento suave para los enlaces internos
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                window.scrollTo({
-                    top: target.offsetTop - 80, // Ajustar para la barra de navegación fija
-                    behavior: 'smooth'
+    // Configuración de desplazamiento suave para enlaces internos
+    const setupSmoothScroll = () => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            // Evitar duplicar manejadores
+            if (!anchor.hasAttribute('data-smooth-scroll')) {
+                anchor.setAttribute('data-smooth-scroll', 'true');
+                
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#' || href === '') return;
+                    
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        window.scrollTo({
+                            top: target.offsetTop - 80, // Ajustar para la barra de navegación fija
+                            behavior: 'smooth'
+                        });
+                    }
                 });
             }
         });
-    });
-});
-
-// Scroll suave para los enlaces de navegación
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    });
+    };
+    
+    // Inicializar desplazamiento suave
+    setupSmoothScroll();
+    
+    // Volver a configurar si se agregan elementos dinámicamente
+    const observer = new MutationObserver(setupSmoothScroll);
+    observer.observe(document.body, { childList: true, subtree: true });
 });
 
 // Entrenamientos

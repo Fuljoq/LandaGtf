@@ -154,18 +154,40 @@ function updateActiveLink() {
 }
 
 // Cerrar menú al hacer clic en un enlace
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        if (window.innerWidth <= 1024) {
-            hamburger.classList.remove('active');
-            navLinksContainer.classList.remove('active');
-            document.body.style.overflow = '';
-            document.documentElement.classList.remove('menu-open');
+const handleNavLinkClick = (e) => {
+    // Prevenir el comportamiento por defecto para manejar manualmente la navegación
+    e.preventDefault();
+    
+    // Cerrar el menú móvil si está abierto
+    if (window.innerWidth <= 1024) {
+        hamburger.classList.remove('active');
+        navLinksContainer.classList.remove('active');
+        document.body.style.overflow = '';
+        document.documentElement.classList.remove('menu-open');
+    }
+    
+    // Navegar al destino del enlace
+    const target = e.currentTarget.getAttribute('href');
+    if (target.startsWith('#')) {
+        // Para enlaces de anclaje
+        const targetElement = document.querySelector(target);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
         }
-        
-        // Actualizar el enlace activo después de un pequeño retraso para permitir la navegación
-        setTimeout(updateActiveLink, 100);
-    });
+    } else {
+        // Para enlaces a otras páginas
+        window.location.href = target;
+    }
+    
+    // Actualizar el enlace activo
+    updateActiveLink();
+};
+
+// Agregar manejador de eventos a los enlaces de navegación
+navLinks.forEach(link => {
+    link.addEventListener('click', handleNavLinkClick);
+    // Agregar también para eventos táctiles
+    link.addEventListener('touchend', handleNavLinkClick, { passive: true });
 });
 
 // Actualizar el enlace activo al cargar la página

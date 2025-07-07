@@ -86,25 +86,48 @@ function createVideoCard(video) {
     return videoCard;
 }
 
+// Función para manejar la interacción con los botones de video
+const setupVideoButtons = (card) => {
+    // Manejar botones de días (Landa Challenge)
+    const dayButtons = card.querySelectorAll('.day-button');
+    dayButtons.forEach(button => {
+        // Efecto hover para desktop
+        button.addEventListener('mouseenter', () => {
+            button.style.transform = 'translateY(-2px)';
+            button.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = 'translateY(0)';
+            button.style.boxShadow = 'none';
+        });
+        
+        // Asegurar que los clics funcionen en móviles
+        button.addEventListener('touchend', (e) => {
+            e.stopPropagation();
+            // Forzar la apertura del enlace en una nueva pestaña
+            window.open(button.href, '_blank');
+        }, { passive: true });
+    });
+    
+    // Manejar botones de ejercicios
+    const exerciseButtons = card.querySelectorAll('.exercise-button');
+    exerciseButtons.forEach(button => {
+        button.addEventListener('touchend', (e) => {
+            e.stopPropagation();
+            // Forzar la apertura del enlace en una nueva pestaña
+            window.open(button.href, '_blank');
+        }, { passive: true });
+    });
+};
+
 // Agregar videos al grid
 videos.forEach(video => {
     const card = createVideoCard(video);
     videoGrid.appendChild(card);
     
-    // Agregar eventos hover a los botones de días si es Landa Challenge
-    if (video.title === "Landa Challenge") {
-        const dayButtons = card.querySelectorAll('.day-button');
-        dayButtons.forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                button.style.transform = 'translateY(-2px)';
-                button.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
-            });
-            button.addEventListener('mouseleave', () => {
-                button.style.transform = 'translateY(0)';
-                button.style.boxShadow = 'none';
-            });
-        });
-    }
+    // Configurar los botones del video
+    setupVideoButtons(card);
 });
 
 // Menú móvil
